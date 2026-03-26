@@ -19,7 +19,6 @@ services:
 
   acme-companion:
     image: nginxproxy/acme-companion
-    container_name: acme-companion
     restart: always
     environment:
       - NGINX_PROXY_CONTAINER=nginx-proxy
@@ -34,7 +33,6 @@ services:
 
   placeholder-site:
     image: mikkkkkkka/placeholder-site:latest
-    container_name: placeholder-site
     restart: always
     environment:
       - VIRTUAL_HOST=${PLACEHOLDER_SITE_HOST}
@@ -45,7 +43,6 @@ services:
 
   web-backend:
     image: mikkkkkkka/m3303-kashin-backend:latest
-    container_name: web-backend
     restart: always
     environment:
       - VIRTUAL_HOST=${WEB_BACKEND_SITE_HOST}
