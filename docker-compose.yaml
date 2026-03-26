@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - placeholder-site
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: acme-companion
+    restart: always
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+      - DEFAULT_EMAIL=${DEFAULT_EMAIL}
+    volumes:
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - nginx-proxy
+
+  placeholder-site:
+    image: mikkkkkkka/placeholder-site:latest
+    container_name: placeholder-site
+    restart: always
+    environment:
+      - VIRTUAL_HOST=${PLACEHOLDER_SITE_HOST}
+      - LETSENCRYPT_HOST=${PLACEHOLDER_SITE_HOST}
+      - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
+    expose:
+      - "80"
+
+  web-backend:
+    image: mikkkkkkka/m3303-kashin-backend:latest
+    container_name: web-backend
+    restart: always
+    environment:
+      - VIRTUAL_HOST=${WEB_BACKEND_SITE_HOST}
+      - LETSENCRYPT_HOST=${WEB_BACKEND_SITE_HOST}
+      - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
+    expose: "3000"
+
+volumes:
+  certs:
+  vhost:
+  html:
