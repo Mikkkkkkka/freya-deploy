@@ -51,7 +51,8 @@ services:
       - VIRTUAL_HOST=${WEB_BACKEND_SITE_HOST}
       - LETSENCRYPT_HOST=${WEB_BACKEND_SITE_HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
-    expose: "3000"
+    expose:
+      - "3000"
 
 volumes:
   certs:
