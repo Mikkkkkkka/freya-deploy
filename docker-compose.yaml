@@ -38,8 +38,6 @@ services:
       - VIRTUAL_HOST=${PLACEHOLDER_SITE_HOST}
       - LETSENCRYPT_HOST=${PLACEHOLDER_SITE_HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
-    expose:
-      - "80"
 
   web-backend:
     image: mikkkkkkka/m3303-kashin-backend:latest
@@ -48,8 +46,6 @@ services:
       - VIRTUAL_HOST=${WEB_BACKEND_SITE_HOST}
       - LETSENCRYPT_HOST=${WEB_BACKEND_SITE_HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
-    expose:
-      - "3000"
 
 volumes:
   certs:
