@@ -15,6 +15,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - placeholder-site
+      - web-backend
 
   acme-companion:
     image: nginxproxy/acme-companion
