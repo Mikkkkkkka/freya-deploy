@@ -47,7 +47,49 @@ services:
       - LETSENCRYPT_HOST=${WEB_BACKEND_SITE_HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
 
+  what-i-know-api:
+    image: mikkkkkkka/what-i-know-api:latest
+    restart: always
+    environment:
+      - VIRTUAL_HOST=${WHAT_I_KNOW__API_HOST}
+      - LETSENCRYPT_HOST=${WHAT_I_KNOW__API_HOST}
+      - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
+      - DB_HOST=${WHAT_I_KNOW__DB_HOST}
+      - DB_PORT=${WHAT_I_KNOW__DB_PORT}
+      - DB_USER=${WHAT_I_KNOW__DB_USER}
+      - DB_PASSWORD=${WHAT_I_KNOW__DB_PASSWORD}
+      - DB_NAME=${WHAT_I_KNOW__DB_NAME}
+      - DB_SSL_MODE=${WHAT_I_KNOW__DB_SSL_MODE}
+      - JWT_SECRET=${WHAT_I_KNOW__JWT_SECRET}
+      - HTTP_ADDRESS=${WHAT_I_KNOW__HTTP_ADDRESS}
+      - HTTP_API_BASE_PATH=${WHAT_I_KNOW__HTTP_API_BASE_PATH}
+      - HTTP_READ_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_READ_TIMEOUT_SECONDS}
+      - HTTP_WRITE_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_WRITE_TIMEOUT_SECONDS}
+      - HTTP_IDLE_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_IDLE_TIMEOUT_SECONDS}
+      - HTTP_SHUTDOWN_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_SHUTDOWN_TIMEOUT_SECONDS}
+    depends_on:
+      what-i-know-db:
+        condition: service_healthy
+  
+  what-i-know-db:
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=${WHAT_I_KNOW__DB_USER}
+      - POSTGRES_PASSWORD=${WHAT_I_KNOW__DB_PASSWORD}
+      - POSTGRES_DB=${WHAT_I_KNOW__DB_NAME}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - what-i-know-db-data:/var/lib/postgresql/data
+    ports:
+      - "${WHAT_I_KNOW__DB_HOST_PORT}:${WHAT_I_KNOW__DB_PORT}"
+
 volumes:
   certs:
   vhost:
   html:
+  what-i-know-db-data:
