@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   nginx-proxy:
     image: nginxproxy/nginx-proxy
@@ -24,6 +22,7 @@ services:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - DEFAULT_EMAIL=${DEFAULT_EMAIL}
     volumes:
+      - acme:/etc/acme.sh
       - certs:/etc/nginx/certs
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
@@ -44,6 +43,7 @@ services:
     restart: always
     environment:
       - VIRTUAL_HOST=${WEB_BACKEND_SITE_HOST}
+      - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=${WEB_BACKEND_SITE_HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
 
@@ -52,6 +52,7 @@ services:
     restart: always
     environment:
       - VIRTUAL_HOST=${WHAT_I_KNOW__API_HOST}
+      - VIRTUAL_PORT=${WHAT_I_KNOW__HTTP_ADDRESS}
       - LETSENCRYPT_HOST=${WHAT_I_KNOW__API_HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
       - DB_HOST=${WHAT_I_KNOW__DB_HOST}
@@ -91,6 +92,7 @@ services:
       - "${WHAT_I_KNOW__DB_HOST_PORT}:5432"
 
 volumes:
+  acme:
   certs:
   vhost:
   html:
