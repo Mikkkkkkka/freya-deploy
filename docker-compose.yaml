@@ -55,7 +55,7 @@ services:
       - LETSENCRYPT_HOST=${WHAT_I_KNOW__API_HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
       - DB_HOST=${WHAT_I_KNOW__DB_HOST}
-      - DB_PORT=${WHAT_I_KNOW__DB_PORT}
+      - DB_PORT=5432
       - DB_USER=${WHAT_I_KNOW__DB_USER}
       - DB_PASSWORD=${WHAT_I_KNOW__DB_PASSWORD}
       - DB_NAME=${WHAT_I_KNOW__DB_NAME}
@@ -80,7 +80,6 @@ services:
       - POSTGRES_USER=${WHAT_I_KNOW__DB_USER}
       - POSTGRES_PASSWORD=${WHAT_I_KNOW__DB_PASSWORD}
       - POSTGRES_DB=${WHAT_I_KNOW__DB_NAME}
-      - POSTGRES_PORT=${WHAT_I_KNOW__DB_PORT}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
       interval: 5s
@@ -89,7 +88,7 @@ services:
     volumes:
       - what-i-know-db-data:/var/lib/postgresql/data
     ports:
-      - "${WHAT_I_KNOW__DB_HOST_PORT}:${WHAT_I_KNOW__DB_PORT}"
+      - "${WHAT_I_KNOW__DB_HOST_PORT}:5432"
 
 volumes:
   certs:
