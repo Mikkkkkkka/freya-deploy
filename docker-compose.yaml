@@ -61,7 +61,7 @@ services:
       - DB_NAME=${WHAT_I_KNOW__DB_NAME}
       - DB_SSL_MODE=${WHAT_I_KNOW__DB_SSL_MODE}
       - JWT_SECRET=${WHAT_I_KNOW__JWT_SECRET}
-      - HTTP_ADDRESS=${WHAT_I_KNOW__HTTP_ADDRESS}
+      - HTTP_ADDRESS=:${WHAT_I_KNOW__HTTP_ADDRESS}
       - HTTP_API_BASE_PATH=${WHAT_I_KNOW__HTTP_API_BASE_PATH}
       - HTTP_READ_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_READ_TIMEOUT_SECONDS}
       - HTTP_WRITE_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_WRITE_TIMEOUT_SECONDS}
@@ -70,6 +70,8 @@ services:
     depends_on:
       what-i-know-db:
         condition: service_healthy
+    ports:
+      - "${WHAT_I_KNOW__HTTP_ADDRESS}:${WHAT_I_KNOW__HTTP_ADDRESS}"
   
   what-i-know-db:
     image: postgres:16
