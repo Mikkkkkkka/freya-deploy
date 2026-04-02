@@ -7,3 +7,5 @@
 *.pfx
 *.p12
 certs/
+
+docker-scripts.sh
