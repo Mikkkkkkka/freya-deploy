@@ -42,11 +42,11 @@ services:
     image: mikkkkkkka/typoracer-community:latest
     restart: always
     environment:
-      - VIRTUAL_HOST=${TYPORACER_COMMUNITY__SITE_HOST}
+      - VIRTUAL_HOST=${TYPORACER_COMMUNITY__SITE__HOST}
       - VIRTUAL_PORT=3000
-      - LETSENCRYPT_HOST=${TYPORACER_COMMUNITY__SITE_HOST}
+      - LETSENCRYPT_HOST=${TYPORACER_COMMUNITY__SITE__HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
-      - DB_HOST=${TYPORACER_COMMUNITY__SITE_DB_HOST}
+      - DB_HOST=${TYPORACER_COMMUNITY__SITE__DB_HOST}
       - NODE_ENV=production
     depends_on:
       typoracer-community-db:
@@ -56,9 +56,9 @@ services:
     image: postgres:16
     restart: always
     environment:
-      - POSTGRES_USER=${TYPORACER_COMMUNITY__DB_USER}
-      - POSTGRES_PASSWORD=${TYPORACER_COMMUNITY__DB_PASSWORD}
-      - POSTGRES_DB=${TYPORACER_COMMUNITY__DB_NAME}
+      - POSTGRES_USER=${TYPORACER_COMMUNITY__DB__USER}
+      - POSTGRES_PASSWORD=${TYPORACER_COMMUNITY__DB__PASSWORD}
+      - POSTGRES_DB=${TYPORACER_COMMUNITY__DB__NAME}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
       interval: 5s
@@ -67,29 +67,30 @@ services:
     volumes:
       - typoracer-community-db-data:/var/lib/postgresql/data
     ports:
-      - "${TYPORACER_COMMUNITY__DB_PORT}:5432"
+      - "${TYPORACER_COMMUNITY__DB__EXPORT_PORT}:5432"
 
   what-i-know-api:
     image: mikkkkkkka/what-i-know-api:latest
     restart: always
     environment:
-      - VIRTUAL_HOST=${WHAT_I_KNOW__API_HOST}
-      - VIRTUAL_PORT=${WHAT_I_KNOW__HTTP_ADDRESS}
-      - LETSENCRYPT_HOST=${WHAT_I_KNOW__API_HOST}
+      - VIRTUAL_HOST=${WHAT_I_KNOW__API__HOST}
+      - VIRTUAL_PORT=${WHAT_I_KNOW__API__HTTP_ADDRESS}
+      - LETSENCRYPT_HOST=${WHAT_I_KNOW__API__HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
-      - DB_HOST=${WHAT_I_KNOW__DB_HOST}
-      - DB_PORT=5432
-      - DB_USER=${WHAT_I_KNOW__DB_USER}
-      - DB_PASSWORD=${WHAT_I_KNOW__DB_PASSWORD}
-      - DB_NAME=${WHAT_I_KNOW__DB_NAME}
-      - DB_SSL_MODE=${WHAT_I_KNOW__DB_SSL_MODE}
-      - JWT_SECRET=${WHAT_I_KNOW__JWT_SECRET}
-      - HTTP_ADDRESS=:${WHAT_I_KNOW__HTTP_ADDRESS}
-      - HTTP_API_BASE_PATH=${WHAT_I_KNOW__HTTP_API_BASE_PATH}
-      - HTTP_READ_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_READ_TIMEOUT_SECONDS}
-      - HTTP_WRITE_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_WRITE_TIMEOUT_SECONDS}
-      - HTTP_IDLE_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_IDLE_TIMEOUT_SECONDS}
-      - HTTP_SHUTDOWN_TIMEOUT_SECONDS=${WHAT_I_KNOW__HTTP_SHUTDOWN_TIMEOUT_SECONDS}
+
+      - DB_HOST=${WHAT_I_KNOW__DB__HOST}
+      - DB_PORT=${WHAT_I_KNOW__DB__PORT}
+      - DB_USER=${WHAT_I_KNOW__DB__USER}
+      - DB_PASSWORD=${WHAT_I_KNOW__DB__PASSWORD}
+      - DB_NAME=${WHAT_I_KNOW__DB__NAME}
+      - DB_SSL_MODE=${WHAT_I_KNOW__DB__SSL_MODE}
+      - JWT_SECRET=${WHAT_I_KNOW__API__JWT_SECRET}
+      - HTTP_ADDRESS=:${WHAT_I_KNOW__API__HTTP_ADDRESS}
+      - HTTP_API_BASE_PATH=${WHAT_I_KNOW__API__HTTP_API_BASE_PATH}
+      - HTTP_READ_TIMEOUT_SECONDS=${WHAT_I_KNOW__API__HTTP_READ_TIMEOUT_SECONDS}
+      - HTTP_WRITE_TIMEOUT_SECONDS=${WHAT_I_KNOW__API__HTTP_WRITE_TIMEOUT_SECONDS}
+      - HTTP_IDLE_TIMEOUT_SECONDS=${WHAT_I_KNOW__API__HTTP_IDLE_TIMEOUT_SECONDS}
+      - HTTP_SHUTDOWN_TIMEOUT_SECONDS=${WHAT_I_KNOW__API__HTTP_SHUTDOWN_TIMEOUT_SECONDS}
     depends_on:
       what-i-know-db:
         condition: service_healthy
@@ -98,9 +99,9 @@ services:
     image: postgres:16
     restart: always
     environment:
-      - POSTGRES_USER=${WHAT_I_KNOW__DB_USER}
-      - POSTGRES_PASSWORD=${WHAT_I_KNOW__DB_PASSWORD}
-      - POSTGRES_DB=${WHAT_I_KNOW__DB_NAME}
+      - POSTGRES_USER=${WHAT_I_KNOW__DB__USER}
+      - POSTGRES_PASSWORD=${WHAT_I_KNOW__DB__PASSWORD}
+      - POSTGRES_DB=${WHAT_I_KNOW__DB__NAME}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
       interval: 5s
@@ -109,7 +110,7 @@ services:
     volumes:
       - what-i-know-db-data:/var/lib/postgresql/data
     ports:
-      - "${WHAT_I_KNOW__DB_HOST_PORT}:5432"
+      - "${WHAT_I_KNOW__DB__HOST_PORT}:5432"
 
 volumes:
   acme:
