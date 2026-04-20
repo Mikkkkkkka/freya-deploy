@@ -79,18 +79,18 @@ services:
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
 
       - DB_HOST=${WHAT_I_KNOW__DB__HOST}
-      - DB_PORT=${WHAT_I_KNOW__DB__PORT}
+      - DB_PORT=5432
       - DB_USER=${WHAT_I_KNOW__DB__USER}
       - DB_PASSWORD=${WHAT_I_KNOW__DB__PASSWORD}
       - DB_NAME=${WHAT_I_KNOW__DB__NAME}
       - DB_SSL_MODE=${WHAT_I_KNOW__DB__SSL_MODE}
-      - JWT_SECRET=${WHAT_I_KNOW__API__JWT_SECRET}
       - HTTP_ADDRESS=:${WHAT_I_KNOW__API__HTTP_ADDRESS}
       - HTTP_API_BASE_PATH=${WHAT_I_KNOW__API__HTTP_API_BASE_PATH}
       - HTTP_READ_TIMEOUT_SECONDS=${WHAT_I_KNOW__API__HTTP_READ_TIMEOUT_SECONDS}
       - HTTP_WRITE_TIMEOUT_SECONDS=${WHAT_I_KNOW__API__HTTP_WRITE_TIMEOUT_SECONDS}
       - HTTP_IDLE_TIMEOUT_SECONDS=${WHAT_I_KNOW__API__HTTP_IDLE_TIMEOUT_SECONDS}
       - HTTP_SHUTDOWN_TIMEOUT_SECONDS=${WHAT_I_KNOW__API__HTTP_SHUTDOWN_TIMEOUT_SECONDS}
+      - JWT_SECRET=${WHAT_I_KNOW__API__JWT_SECRET}
     depends_on:
       what-i-know-db:
         condition: service_healthy
@@ -110,7 +110,7 @@ services:
     volumes:
       - what-i-know-db-data:/var/lib/postgresql/data
     ports:
-      - "${WHAT_I_KNOW__DB__HOST_PORT}:5432"
+      - "${WHAT_I_KNOW__DB__EXPORT_PORT}:5432"
 
 volumes:
   acme:
