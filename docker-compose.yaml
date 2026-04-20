@@ -13,7 +13,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - placeholder-site
-      - web-backend
+      - typoracer-community
 
   acme-companion:
     image: nginxproxy/acme-companion
@@ -34,18 +34,40 @@ services:
     image: mikkkkkkka/placeholder-site:latest
     restart: always
     environment:
-      - VIRTUAL_HOST=${PLACEHOLDER_SITE_HOST}
-      - LETSENCRYPT_HOST=${PLACEHOLDER_SITE_HOST}
+      - VIRTUAL_HOST=${PLACEHOLDER_SITE__HOST}
+      - LETSENCRYPT_HOST=${PLACEHOLDER_SITE__HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
 
-  web-backend:
-    image: mikkkkkkka/m3303-kashin-backend:latest
+  typoracer-community:
+    image: mikkkkkkka/typoracer-community:latest
     restart: always
     environment:
-      - VIRTUAL_HOST=${WEB_BACKEND_SITE_HOST}
+      - VIRTUAL_HOST=${TYPORACER_COMMUNITY__SITE_HOST}
       - VIRTUAL_PORT=3000
-      - LETSENCRYPT_HOST=${WEB_BACKEND_SITE_HOST}
+      - LETSENCRYPT_HOST=${TYPORACER_COMMUNITY__SITE_HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
+      - DB_HOST=${TYPORACER_COMMUNITY__SITE_DB_HOST}
+      - NODE_ENV=production
+    depends_on:
+      typoracer-community-db:
+        condition: service_healthy
+
+  typoracer-community-db:
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=${TYPORACER_COMMUNITY__DB_USER}
+      - POSTGRES_PASSWORD=${TYPORACER_COMMUNITY__DB_PASSWORD}
+      - POSTGRES_DB=${TYPORACER_COMMUNITY__DB_NAME}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - typoracer-community-db-data:/var/lib/postgresql/data
+    ports:
+      - "${TYPORACER_COMMUNITY__DB_PORT}:5432"
 
   what-i-know-api:
     image: mikkkkkkka/what-i-know-api:latest
@@ -71,8 +93,6 @@ services:
     depends_on:
       what-i-know-db:
         condition: service_healthy
-    ports:
-      - "${WHAT_I_KNOW__HTTP_ADDRESS}:${WHAT_I_KNOW__HTTP_ADDRESS}"
   
   what-i-know-db:
     image: postgres:16
@@ -97,3 +117,4 @@ volumes:
   vhost:
   html:
   what-i-know-db-data:
+  typoracer-community-db-data:
