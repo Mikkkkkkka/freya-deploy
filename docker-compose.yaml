@@ -46,7 +46,7 @@ services:
       - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=${TYPORACER_COMMUNITY__SITE__HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
-      - DB_HOST=${TYPORACER_COMMUNITY__SITE__DB_HOST}
+      - DATABASE_URL=${TYPORACER_COMMUNITY__SITE__DB_HOST}
       - NODE_ENV=production
     depends_on:
       typoracer-community-db:
