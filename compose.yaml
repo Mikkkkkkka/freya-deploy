@@ -12,7 +12,7 @@ services:
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
-      - placeholder-site
+      - personal-page
       - typoracer-community
 
   acme-companion:
