@@ -30,12 +30,12 @@ services:
     depends_on:
       - nginx-proxy
 
-  placeholder-site:
-    image: mikkkkkkka/placeholder-site:latest
+  personal-page:
+    image: mikkkkkkka/personal-page:latest
     restart: always
     environment:
-      - VIRTUAL_HOST=${PLACEHOLDER_SITE__HOST}
-      - LETSENCRYPT_HOST=${PLACEHOLDER_SITE__HOST}
+      - VIRTUAL_HOST=${PERSONAL_PAGE__HOST}
+      - LETSENCRYPT_HOST=${PERSONAL_PAGE__HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
 
   typoracer-community:
