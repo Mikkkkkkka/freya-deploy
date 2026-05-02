@@ -47,6 +47,7 @@ services:
       - LETSENCRYPT_HOST=${TYPORACER_COMMUNITY__SITE__HOST}
       - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
       - DATABASE_URL=${TYPORACER_COMMUNITY__SITE__DATABASE_URL}
+      - JWT_SECRET=${TYPORACER_COMMUNITY__SITE__JWT_SECRET}
       - NODE_ENV=production
     depends_on:
       typoracer-community-db:
