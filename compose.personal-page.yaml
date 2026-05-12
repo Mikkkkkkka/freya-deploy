@@ -1,6 +1,6 @@
 services:
   personal-page:
-    image: mikkkkkkka/personal-page:latest
+    image: mikkkkkkka/personal-page:v0.1.0
     restart: always
     environment:
       - VIRTUAL_HOST=${PERSONAL_PAGE__HOST}

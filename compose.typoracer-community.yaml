@@ -1,6 +1,6 @@
 services:
   typoracer-community:
-    image: mikkkkkkka/typoracer-community:latest
+    image: mikkkkkkka/typoracer-community:v0.1.1
     restart: always
     environment:
       - VIRTUAL_HOST=${TYPORACER_COMMUNITY__SITE__HOST}

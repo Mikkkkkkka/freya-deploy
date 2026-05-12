@@ -1,6 +1,6 @@
 services:
   what-i-know-api:
-    image: mikkkkkkka/what-i-know-api:latest
+    image: mikkkkkkka/what-i-know-api:v0.1.2
     restart: always
     environment:
       - VIRTUAL_HOST=${WHAT_I_KNOW__API__HOST}
