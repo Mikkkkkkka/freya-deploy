@@ -40,7 +40,7 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - what-i-know-db-data:/var/lib/postgresql/data
+      - what-i-know-db-data:/var/lib/postgresql
     ports:
       - "${WHAT_I_KNOW__DB__EXPORT_PORT}:5432"
     networks:
