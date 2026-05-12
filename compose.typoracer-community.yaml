@@ -18,7 +18,7 @@ services:
       - internal
 
   typoracer-community-db:
-    image: postgres:16
+    image: postgres:18-bookworm
     restart: always
     environment:
       - POSTGRES_USER=${TYPORACER_COMMUNITY__DB__USER}

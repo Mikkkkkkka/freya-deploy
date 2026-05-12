@@ -28,7 +28,7 @@ services:
       - internal
 
   what-i-know-db:
-    image: postgres:16
+    image: postgres:18-bookworm
     restart: always
     environment:
       - POSTGRES_USER=${WHAT_I_KNOW__DB__USER}
