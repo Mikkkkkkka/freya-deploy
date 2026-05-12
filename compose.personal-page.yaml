@@ -1,0 +1,15 @@
+services:
+  personal-page:
+    image: mikkkkkkka/personal-page:latest
+    restart: always
+    environment:
+      - VIRTUAL_HOST=${PERSONAL_PAGE__HOST}
+      - LETSENCRYPT_HOST=${PERSONAL_PAGE__HOST}
+      - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: freya-proxy

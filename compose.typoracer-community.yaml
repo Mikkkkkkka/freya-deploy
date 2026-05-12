@@ -1,0 +1,46 @@
+services:
+  typoracer-community:
+    image: mikkkkkkka/typoracer-community:latest
+    restart: always
+    environment:
+      - VIRTUAL_HOST=${TYPORACER_COMMUNITY__SITE__HOST}
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=${TYPORACER_COMMUNITY__SITE__HOST}
+      - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
+      - DATABASE_URL=${TYPORACER_COMMUNITY__SITE__DATABASE_URL}
+      - JWT_SECRET=${TYPORACER_COMMUNITY__SITE__JWT_SECRET}
+      - NODE_ENV=production
+    depends_on:
+      typoracer-community-db:
+        condition: service_healthy
+    networks:
+      - proxy
+      - internal
+
+  typoracer-community-db:
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=${TYPORACER_COMMUNITY__DB__USER}
+      - POSTGRES_PASSWORD=${TYPORACER_COMMUNITY__DB__PASSWORD}
+      - POSTGRES_DB=${TYPORACER_COMMUNITY__DB__NAME}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - typoracer-community-db-data:/var/lib/postgresql/data
+    ports:
+      - "${TYPORACER_COMMUNITY__DB__EXPORT_PORT}:5432"
+    networks:
+      - internal
+
+networks:
+  proxy:
+    external: true
+    name: freya-proxy
+  internal:
+
+volumes:
+  typoracer-community-db-data:
