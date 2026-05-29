@@ -1,0 +1,19 @@
+services:
+  minecraft-mods:
+    image: nginx:1.27-alpine
+    restart: always
+    environment:
+      - VIRTUAL_HOST=${MINECRAFT_MODS__HOST}
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=${MINECRAFT_MODS__HOST}
+      - LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}
+    volumes:
+      - ${MINECRAFT_MODS__FILES_PATH}:/usr/share/nginx/html:ro
+      - ./configs/minecraft-mods/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: freya-proxy
